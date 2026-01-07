@@ -1,17 +1,21 @@
-# stage 1 base image 1.04 Gb
+# stage 1 base image size 1.09 Gb
 FROM python:3.9 AS builder
 
 WORKDIR /app
 
+# local se copy and push builder container /app
 COPY requirements.txt .
 
+# builder image requirements dependencies install
 RUN pip install -r requirements.txt
 
-# stage 2 base image
+# ------------
+# stage 2 base image size 140 mb
 FROM python:3.9-slim
 
 WORKDIR /app
 
+# builder packages dependencies copy and push slim container /app
 COPY --from=builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 
 COPY . .
